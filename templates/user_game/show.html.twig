@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ user_game.game.title }}{% endblock %}
+
+{% block body %}
+    <div class="container user-game-show-container">
+        <div class="row">
+            <!-- Cover -->
+            <div class="column column-40 text-align-center">
+                <img src="{{ asset("uploads/games/" ~ user_game.game.coverImage) }}" alt="{{ user_game.game.title }}" class="user-game-show-img">
+            </div>
+
+            <!-- Infos -->
+            <div class="column column-60">
+                <h1>{{ user_game.game.title }}</h1>
+
+                <div class="row">
+                    <div class="column">
+                        <strong>Date de début</strong><br>
+                        {{ user_game.playStartDate ? user_game.playStartDate|date('d/m/Y') : '—' }}
+                    </div>
+                    <div class="column">
+                        <strong>Date de fin</strong><br>
+                        {{ user_game.playEndDate ? user_game.playEndDate|date('d/m/Y') : '—' }}
+                    </div>
+                    <div class="column">
+                        <strong>Temps passé</strong><br>
+                        {{ user_game.formattedPlayTime }}
+                    </div>
+                </div>
+
+                <div class="row mt1rem">
+                    <div class="column">
+                        <strong>Histoire terminée</strong><br>
+                        {{ user_game.completedStory ? '✅ Oui' : '❌ Non' }}
+                    </div>
+                    <div class="column">
+                        <strong>100%</strong><br>
+                        {{ user_game.completedFull ? '✅ Oui' : '❌ Non' }}
+                    </div>
+                    <div class="column">
+                        <strong>Early Access</strong><br>
+                        {{ user_game.earlyAccess ? '✅ Oui' : '❌ Non' }}
+                    </div>
+                </div>
+
+                <div class="row mt1rem">
+                    <div class="column">
+                        <strong>Plateforme</strong><br>
+                        {{ user_game.platform ? user_game.platform.name : '—' }}
+                    </div>
+                    <div class="column">
+                        <strong>{{ ratingScaleLabel }}</strong><br>
+                        <span class="user-game-show-score">{{ user_game.displayScore }}</span>
+                    </div>
+                </div>
+
+                {% if user_game.comment %}
+                    <div class="row mt1rem">
+                        <div class="column">
+                            <strong>Commentaire</strong>
+                            <blockquote class="user-game-show-comment">
+                                {{ user_game.comment|nl2br }}
+                            </blockquote>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if user_game.user == currentUser %}
+            <div class="row mt2rem">
+                <div class="column">
+                    <a href="{{ path('app_user_game_index') }}" class="button">⬅ Retour</a>
+                    <a href="{{ path('app_user_game_edit', {'id': user_game.id}) }}" class="button button-outline">✏️ Éditer</a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

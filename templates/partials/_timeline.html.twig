@@ -1,0 +1,28 @@
+<div id="visualization"></div>
+
+<script type="text/javascript">
+    var container = document.getElementById('visualization');
+
+    // Tes UserGame (avec start + end)
+    var items = new vis.DataSet([
+        {% for user_game in user_games %}
+        {
+            id: {{ user_game.id }},
+            start: "{{ user_game.playStartDate|date('Y-m-d') }}",
+            end: "{{ user_game.playEndDate|date('Y-m-d') }}",
+            type: "box",   // <== ligne entre start et end
+            content: '<img src="{{ asset("uploads/games/" ~ user_game.game.coverImage) }}" alt="{{ user_game.game.title }}" />',
+            title: "{{ user_game.game.title }} du {{ user_game.playStartDate|date('d/m/Y') }} au {{ user_game.playEndDate|date('d/m/Y') }}",
+        },
+        {% endfor %}
+    ]);
+
+    var options = {
+        stack: true,  // empile les barres si chevauchement
+        horizontalScroll: true,
+        zoomKey: 'ctrlKey',
+        orientation: 'top'
+    };
+
+    var timeline = new vis.Timeline(container, items, options);
+</script>

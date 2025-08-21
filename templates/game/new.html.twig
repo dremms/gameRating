@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter Un Jeux{% endblock %}
+
+{% block body %}
+    <h1>Ajouter Un Jeux</h1>
+    <h3>Allez chercher l'id IGDB : <a href="https://www.igdb.com/" target="_blank">lien</a></h3>
+
+    {{ form_start(form) }}
+    {{ form_row(form.igdbId) }}
+    <button class="btn btn-primary">Importer le jeu</button>
+    {{ form_end(form) }}
+    <div class="flash-container">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endblock %}
