@@ -10,17 +10,14 @@
     <a href="{{ path('app_user_game_index') }}">back to list</a>
 
     <script>
-        function initPlatformLoader() {
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("SCRIPT chargé !");
             const gameSelect = document.querySelector('#user_game_game');
+            console.log("gameSelect trouvé ?", gameSelect);
             const platformsContainer = document.querySelector('#user_game_platform');
+            console.log("platformsContainer trouvé ?", platformsContainer);
 
-            if (!gameSelect || !platformsContainer) return;
-
-            // On évite de dupliquer les listeners si init est rappelé
-            gameSelect.removeEventListener('change', onGameChange);
-            gameSelect.addEventListener('change', onGameChange);
-
-            function onGameChange() {
+            gameSelect.addEventListener('change', () => {
                 const gameId = gameSelect.value;
                 if (!gameId) {
                     platformsContainer.innerHTML = '';
@@ -32,17 +29,18 @@
                     .then(data => {
                         platformsContainer.innerHTML = '<option value=""></option>';
                         data.forEach(p => {
+                            const id = `user_game_platforms_${p.id}`;
+
                             const option = document.createElement('option');
                             option.name = 'user_game[platforms][]';
                             option.value = p.id;
-                            option.textContent = p.name;
+                            option.id = id;
+                            option.textContent = `${p.name}`;
+
                             platformsContainer.appendChild(option);
                         });
                     });
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', initPlatformLoader);
-        window.addEventListener('pageshow', initPlatformLoader);
+            });
+        });
     </script>
 {% endblock %}
