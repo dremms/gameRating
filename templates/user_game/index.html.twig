@@ -6,14 +6,18 @@
 
     <form method="get" action="{{ path('app_user_game_index') }}">
         <div class="row">
-            <div id="divFormFilterUserGame" class="column column-50">
-                <div class="row">
-                    <label for="filterStartDate" class="column">Date début :</label>
-                    <input type="date" name="filterStartDate" value="{{ filterStartDate }}" class="column">
+            <div id="divFormFilterUserGame" class="column column-offset-25 column-25">
+                <div class="row display-none">
+                    <input type="hidden" name="sort" value="{{ sort }}">
+                    <input type="hidden" name="dir" value="{{ dir }}]">
                 </div>
                 <div class="row">
-                    <label for="filterEndDate" class="column">Date fin :</label>
-                    <input type="date" name="filterEndDate" value="{{ filterEndDate }}" class="column">
+                    <label for="filterStartDate" class="column text-align-right">Date début </label>
+                    <input type="date" id="filterStartDate" name="filterStartDate" value="{{ filterStartDate }}" class="column">
+                </div>
+                <div class="row">
+                    <label for="filterEndDate" class="column text-align-right">Date fin </label>
+                    <input type="date" id="filterEndDate" name="filterEndDate" value="{{ filterEndDate }}" class="column">
                 </div>
                 <div class="row">
                     <button type="submit" class="column column-50 column-offset-50">Filtrer</button>
@@ -23,60 +27,59 @@
         </div>
     </form>
 
-    </form>
     <table class="table">
         <thead>
             <tr>
-                <th><a href="{{ path('app_user_game_index', {sort: 'title', dir: dir == 'asc' ? 'desc' : 'asc'}) }}">
+                <th><a href="{{ path('app_user_game_index', {sort: 'title', dir: dir == 'asc' ? 'desc' : 'asc', filterEndDate: filterEndDate, filterStartDate: filterStartDate}) }}">
                         Nom
                         {% if sort == 'title' %}
                             {% if dir == 'asc' %} ▲ {% else %} ▼ {% endif %}
                         {% endif %}
                     </a>
                 </th>
-                <th><a href="{{ path('app_user_game_index', {sort: 'playStartDate', dir: dir == 'asc' ? 'desc' : 'asc'}) }}">
+                <th><a href="{{ path('app_user_game_index', {sort: 'playStartDate', dir: dir == 'asc' ? 'desc' : 'asc', filterEndDate: filterEndDate, filterStartDate: filterStartDate}) }}">
                         Date de début
                         {% if sort == 'playStartDate' %}
                             {% if dir == 'asc' %} ▲ {% else %} ▼ {% endif %}
                         {% endif %}
                     </a>
                 </th>
-                <th><a href="{{ path('app_user_game_index', {sort: 'playEndDate', dir: dir == 'asc' ? 'desc' : 'asc'}) }}">
+                <th><a href="{{ path('app_user_game_index', {sort: 'playEndDate', dir: dir == 'asc' ? 'desc' : 'asc', filterEndDate: filterEndDate, filterStartDate: filterStartDate}) }}">
                         Date de fin
                         {% if sort == 'playEndDate' %}
                             {% if dir == 'asc' %} ▲ {% else %} ▼ {% endif %}
                         {% endif %}
                     </a>
                 </th>
-                <th><a href="{{ path('app_user_game_index', {sort: 'playTimeSeconds', dir: dir == 'asc' ? 'desc' : 'asc'}) }}">
+                <th><a href="{{ path('app_user_game_index', {sort: 'playTimeSeconds', dir: dir == 'asc' ? 'desc' : 'asc', filterEndDate: filterEndDate, filterStartDate: filterStartDate}) }}">
                         Temps passé
                         {% if sort == 'playTimeSeconds' %}
                             {% if dir == 'asc' %} ▲ {% else %} ▼ {% endif %}
                         {% endif %}
                     </a>
                 </th>
-                <th><a href="{{ path('app_user_game_index', {sort: 'completedStory', dir: dir == 'asc' ? 'desc' : 'asc'}) }}">
+                <th><a href="{{ path('app_user_game_index', {sort: 'completedStory', dir: dir == 'asc' ? 'desc' : 'asc', filterEndDate: filterEndDate, filterStartDate: filterStartDate}) }}">
                         Histoire Terminée
                         {% if sort == 'completedStory' %}
                             {% if dir == 'asc' %} ▲ {% else %} ▼ {% endif %}
                         {% endif %}
                     </a>
                 </th>
-                <th><a href="{{ path('app_user_game_index', {sort: 'completedFull', dir: dir == 'asc' ? 'desc' : 'asc'}) }}">
+                <th><a href="{{ path('app_user_game_index', {sort: 'completedFull', dir: dir == 'asc' ? 'desc' : 'asc', filterEndDate: filterEndDate, filterStartDate: filterStartDate}) }}">
                         100%
                         {% if sort == 'completedFull' %}
                             {% if dir == 'asc' %} ▲ {% else %} ▼ {% endif %}
                         {% endif %}
                     </a>
                 </th>
-                <th><a href="{{ path('app_user_game_index', {sort: 'earlyAccess', dir: dir == 'asc' ? 'desc' : 'asc'}) }}">
+                <th><a href="{{ path('app_user_game_index', {sort: 'earlyAccess', dir: dir == 'asc' ? 'desc' : 'asc', filterEndDate: filterEndDate, filterStartDate: filterStartDate}) }}">
                         Early Access
                         {% if sort == 'earlyAccess' %}
                             {% if dir == 'asc' %} ▲ {% else %} ▼ {% endif %}
                         {% endif %}
                     </a>
                 </th>
-                <th><a href="{{ path('app_user_game_index', {sort: 'scorePercent', dir: dir == 'asc' ? 'desc' : 'asc'}) }}">
+                <th><a href="{{ path('app_user_game_index', {sort: 'scorePercent', dir: dir == 'asc' ? 'desc' : 'asc', filterEndDate: filterEndDate, filterStartDate: filterStartDate}) }}">
                         {{ ratingScaleLabel }}
                         {% if sort == 'scorePercent' %}
                             {% if dir == 'asc' %} ▲ {% else %} ▼ {% endif %}
