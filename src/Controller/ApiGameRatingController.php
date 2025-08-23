@@ -19,7 +19,11 @@ final class ApiGameRatingController extends AbstractController
             'name' => $p->getName(),
         ])->toArray();
 
-        return $this->json($platforms);
+        return $this->json($platforms, 200, [
+            'Cache-Control' => 'no-cache, no-store, must-revalidate',
+            'Pragma' => 'no-cache',
+            'Expires' => '0',
+        ]);
     }
 
 }
