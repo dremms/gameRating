@@ -10,37 +10,38 @@
     <a href="{{ path('app_user_game_index') }}">back to list</a>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log("SCRIPT chargé !");
-            const gameSelect = document.querySelector('#user_game_game');
-            console.log("gameSelect trouvé ?", gameSelect);
-            const platformsContainer = document.querySelector('#user_game_platform');
-            console.log("platformsContainer trouvé ?", platformsContainer);
+        (function () {
+            function initUserGameForm() {
+                const gameSelect = document.querySelector('#user_game_game');
+                const platformsContainer = document.querySelector('#user_game_platform');
+                if (!gameSelect || !platformsContainer) return;
 
-            gameSelect.addEventListener('change', () => {
-                const gameId = gameSelect.value;
-                if (!gameId) {
-                    platformsContainer.innerHTML = '';
-                    return;
-                }
+                const onChange = () => {
+                    const gameId = gameSelect.value;
+                    if (!gameId) { platformsContainer.innerHTML = ''; return; }
 
-                fetch(`/api/game/${gameId}/platforms?ts=${Date.now()}`, { cache: 'no-store' })
-                    .then(response => response.json())
-                    .then(data => {
-                        platformsContainer.innerHTML = '<option value=""></option>';
-                        data.forEach(p => {
-                            const id = `user_game_platforms_${p.id}`;
-
-                            const option = document.createElement('option');
-                            option.name = 'user_game[platforms][]';
-                            option.value = p.id;
-                            option.id = id;
-                            option.textContent = `${p.name}`;
-
-                            platformsContainer.appendChild(option);
+                    fetch(`/api/game/${gameId}/platforms?ts=${Date.now()}`, { cache: 'no-store' })
+                        .then(r => r.json())
+                        .then(data => {
+                            platformsContainer.innerHTML = '<option value=""></option>';
+                            data.forEach(p => {
+                                const opt = document.createElement('option');
+                                opt.value = p.id;
+                                opt.textContent = p.name;
+                                platformsContainer.appendChild(opt);
+                            });
                         });
-                    });
-            });
-        });
+                };
+
+                gameSelect.addEventListener('change', onChange);
+
+                // Nettoyage avant que Turbo mette la page au cache (évite les doublons/fuites)
+                document.addEventListener('turbo:before-cache', () => {
+                    gameSelect.removeEventListener('change', onChange);
+                }, { once: true });
+            }
+
+            document.addEventListener('turbo:load', initUserGameForm, { once: true });
+        })();
     </script>
 {% endblock %}
