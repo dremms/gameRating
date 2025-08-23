@@ -21,7 +21,7 @@
                     return;
                 }
 
-                fetch(`/api/game/${gameId}/platforms`)
+                fetch(`/api/game/${gameId}/platforms?ts=${Date.now()}`, { cache: 'no-store' })
                     .then(response => response.json())
                     .then(data => {
                         platformsContainer.innerHTML = '<option value=""></option>';
