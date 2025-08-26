@@ -10,7 +10,7 @@
             id: {{ user_game.id }},
             start: "{{ user_game.playStartDate|date('Y-m-d') }}",
             end: "{{ user_game.playEndDate|date('Y-m-d') }}",
-            type: "box",   // <== ligne entre start et end
+            type: "box",
             content: '<img src="{{ asset("uploads/games/" ~ user_game.game.coverImage) }}" alt="{{ user_game.game.title }}" />',
             title: "{{ user_game.game.title }} du {{ user_game.playStartDate|date('d/m/Y') }} au {{ user_game.playEndDate|date('d/m/Y') }}",
         },
@@ -23,6 +23,11 @@
         zoomKey: 'ctrlKey',
         orientation: 'top'
     };
-
+    var container = document.getElementById('visualization');
+    container.innerHTML = ""; // vide le contenu précédent
     var timeline = new vis.Timeline(container, items, options);
+
+    window.addEventListener("load", function () {
+        timeline.redraw();
+    });
 </script>

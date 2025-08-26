@@ -3,11 +3,9 @@
 {% block title %}Ajouter Une Note{% endblock %}
 
 {% block body %}
-    <h1>Ajouter Une Note</h1>
+    <h1 class="title is-4 has-text-warning mb-4">Ajouter Une Note</h1>
 
     {{ include('user_game/_form.html.twig') }}
-
-    <a href="{{ path('app_user_game_index') }}">back to list</a>
 
     <script>
         (function () {

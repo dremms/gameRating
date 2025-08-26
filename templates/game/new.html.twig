@@ -1,22 +1,44 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ajouter Un Jeux{% endblock %}
+{% block title %}Ajouter un jeu{% endblock %}
 
 {% block body %}
-    <h1>Ajouter Un Jeux</h1>
-    <h3>Allez chercher l'id IGDB : <a href="https://www.igdb.com/" target="_blank">lien</a></h3>
+    <div class="container mt-5">
+        <div class="box">
+            <!-- Titre -->
+            <h1 class="title is-3 has-text-centered">➕ Ajouter un jeu</h1>
 
-    {{ form_start(form) }}
-    {{ form_row(form.igdbId) }}
-    <button class="btn btn-primary">Importer le jeu</button>
-    {{ form_end(form) }}
-    <div class="flash-container">
-        {% for label, messages in app.flashes %}
-            {% for message in messages %}
-                <div class="alert alert-{{ label }}">
-                    {{ message }}
+            <!-- Info IGDB -->
+            <div class="notification is-info is-light mb-4">
+                <strong>💡 Astuce :</strong> Allez chercher l'ID du jeu sur
+                <a href="https://www.igdb.com/" target="_blank">IGDB</a> et collez-le ici.
+            </div>
+
+            <!-- Formulaire -->
+            {{ form_start(form, { 'attr': { 'class': 'mb-4' } }) }}
+            <div class="field">
+                {{ form_label(form.igdbId, null, { 'label_attr': {'class': 'label'} }) }}
+                <div class="control">
+                    {{ form_widget(form.igdbId, { 'attr': {'class': 'input'} }) }}
                 </div>
+                <p class="help">Exemple : <em>123456</em></p>
+            </div>
+
+            <div class="field mt-4">
+                <div class="control">
+                    <button class="button">📥 Importer le jeu</button>
+                </div>
+            </div>
+            {{ form_end(form) }}
+
+            <!-- Flash messages -->
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="notification is-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
             {% endfor %}
-        {% endfor %}
+        </div>
     </div>
 {% endblock %}

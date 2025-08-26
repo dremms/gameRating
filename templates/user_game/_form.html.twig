@@ -1,53 +1,108 @@
 {{ form_start(form) }}
 
-    <div class="row">
-        <div class="column">
-            {{ form_row(form.game) }}
-        </div>
-        <div class="column">
-            {{ form_row(form.platform) }}
-        </div>
-        <div class="column">
-            {{ form_row(form.scorePercent) }}
-        </div>
-        <div class="column">
-            <div class="row">
+<div class="columns is-centered">
+    <div class="column is-10">
+        <div class="box">
+
+            <div class="columns">
                 <div class="column">
+                    <div class="field">
+                        {{ form_label(form.game, null, {'label_attr': {'class': 'label'}}) }}
+                        <div class="control">
+                            {{ form_widget(form.game, {'attr': {'class': 'input'}}) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        {{ form_label(form.platform, null, {'label_attr': {'class': 'label'}}) }}
+                        <div class="control">
+                            {{ form_widget(form.platform, {'attr': {'class': 'input'}}) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-2 is-offset-2">
+                    <div class="field">
+                        {{ form_label(form.scorePercent, null, {'label_attr': {'class': 'label'}}) }}
+                        <div class="control">
+                            {{ form_widget(form.scorePercent, {'attr': {'class': 'input'}}) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checkboxes alignées à gauche -->
+            <div class="field is-grouped mb-5">
+                <div class="control">
                     {{ form_row(form.completedStory) }}
                 </div>
-                <div class="column">
+                <div class="control ml-4">
                     {{ form_row(form.completedFull) }}
                 </div>
-                <div class="column">
+                <div class="control ml-4">
                     {{ form_row(form.earlyAccess) }}
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="column">
-            {{ form_row(form.playStartDate) }}
-        </div>
-        <div class="column">
-            {{ form_row(form.playEndDate) }}
-        </div>
+            <!-- Dates -->
+            <div class="columns">
+                <div class="column">
+                    <div class="field">
+                        {{ form_label(form.playStartDate, null, {'label_attr': {'class': 'label'}}) }}
+                        <div class="control">
+                            {{ form_widget(form.playStartDate, {'attr': {'class': 'input'}}) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        {{ form_label(form.playEndDate, null, {'label_attr': {'class': 'label'}}) }}
+                        <div class="control">
+                            {{ form_widget(form.playEndDate, {'attr': {'class': 'input'}}) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-2 is-offset-1">
+                    <div class="field">
+                        {{ form_label(form.hours, null, {'label_attr': {'class': 'label'}}) }}
+                        <div class="control">
+                            {{ form_widget(form.hours, {'attr': {'class': 'input'}}) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-2">
+                    <div class="field">
+                        {{ form_label(form.minutes, null, {'label_attr': {'class': 'label'}}) }}
+                        <div class="control">
+                            {{ form_widget(form.minutes, {'attr': {'class': 'input'}}) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-2">
+                    <div class="field">
+                        {{ form_label(form.seconds, null, {'label_attr': {'class': 'label'}}) }}
+                        <div class="control">
+                            {{ form_widget(form.seconds, {'attr': {'class': 'input'}}) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        <div class="column column-10 column-offset-25">
-            {{ form_row(form.hours) }}
-        </div>
-        <div class="column column-10">
-            {{ form_row(form.minutes) }}
-        </div>
-        <div class="column column-10">
-            {{ form_row(form.seconds) }}
-        </div>
-    </div>
-    <div class="row">
-    </div>
+            <div class="field">
+                {{ form_label(form.comment, null, {'label_attr': {'class': 'label'}}) }}
+                <div class="control">
+                    {{ form_widget(form.comment, {'attr': {'class': 'textarea'}}) }}
+                </div>
+            </div>
 
-    <div class="column">
-        {{ form_row(form.comment) }}
+            <div class="field is-grouped mt-4">
+                <div class="control">
+                    <button class="button is-fullwidth">{{ button_label|default('Save') }}</button>
+                </div>
+            </div>
+
+        </div>
     </div>
-    <button class="btn">{{ button_label|default('Save') }}</button>
+</div>
+
 {{ form_end(form) }}

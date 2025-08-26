@@ -3,23 +3,63 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
+    <div class="columns is-centered mt-6">
+        <div class="column is-5">
+            {% for flash_error in app.flashes('verify_email_error') %}
+                <div class="notification is-danger" role="alert">{{ flash_error }}</div>
+            {% endfor %}
 
-    <h1>Register</h1>
+            <div class="box">
+                <h1 class="title has-text-centered">Register</h1>
 
-    {{ form_errors(registrationForm) }}
+                {{ form_start(registrationForm) }}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.username) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.ratingScale) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+                <div class="field">
+                    {{ form_label(registrationForm.email, null, {'label_attr': {'class': 'label'}}) }}
+                    <div class="control">
+                        {{ form_widget(registrationForm.email, {'attr': {'class': 'input'}}) }}
+                    </div>
+                    {{ form_errors(registrationForm.email) }}
+                </div>
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+                <div class="field">
+                    {{ form_label(registrationForm.username, null, {'label_attr': {'class': 'label'}}) }}
+                    <div class="control">
+                        {{ form_widget(registrationForm.username, {'attr': {'class': 'input'}}) }}
+                    </div>
+                    {{ form_errors(registrationForm.username) }}
+                </div>
+
+                <div class="field">
+                    {{ form_label(registrationForm.plainPassword, 'Password', {'label_attr': {'class': 'label'}}) }}
+                    <div class="control">
+                        {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'input'}}) }}
+                    </div>
+                    {{ form_errors(registrationForm.plainPassword) }}
+                </div>
+
+                <div class="field">
+                    {{ form_label(registrationForm.ratingScale, null, {'label_attr': {'class': 'label'}}) }}
+                    <div class="control">
+                        {{ form_widget(registrationForm.ratingScale, {'attr': {'class': 'input'}}) }}
+                    </div>
+                    {{ form_errors(registrationForm.ratingScale) }}
+                </div>
+
+                <div class="field">
+                    <div class="control">
+                        {{ form_widget(registrationForm.agreeTerms) }}
+                        {{ form_label(registrationForm.agreeTerms) }}
+                    </div>
+                    {{ form_errors(registrationForm.agreeTerms) }}
+                </div>
+
+                <div class="field mt-4">
+                    <button type="submit" class="button is-fullwidth">Register</button>
+                </div>
+
+                {{ form_end(registrationForm) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}

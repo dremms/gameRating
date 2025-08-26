@@ -3,80 +3,131 @@
 {% block title %}GameRating{% endblock %}
 
 {% block body %}
-<div class="homeWrapper">
+    <div class="container mt-6">
 
-    <div class="row">
-        <div class="homeDiv column">
-            <h2 class="homeSubtitle">Mes 5 Derniers Jeux</h2>
-            <ul>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Nom</th>
-                        <th>Date de début</th>
-                        <th>Date de fin</th>
-                        <th>Temps passé</th>
-                        <th>Histoire Terminée</th>
-                        <th>100%</th>
-                        <th>Early Access</th>
-                        <th>{{ ratingScaleLabel }}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for user_game in user_games %}
-                        <tr>
-                            <td>{{ user_game.game.title }}</td>
-                            <td>{{ user_game.playStartDate ? user_game.playStartDate|date('d/m/Y') : '' }}</td>
-                            <td>{{ user_game.playEndDate ? user_game.playEndDate|date('d/m/Y') : '' }}</td>
-                            <td>{{ user_game.playTimeSeconds ? user_game.formattedPlayTime : '' }}</td>
-                            <td>{{ user_game.completedStory ? 'Oui' : 'Non' }}</td>
-                            <td>{{ user_game.completedFull ? 'Oui' : 'Non' }}</td>
-                            <td>{{ user_game.earlyAccess ? 'Oui' : 'Non' }}</td>
-                            <td>{{ user_game.displayScore }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-                {% include 'partials/_timeline.html.twig' with { user_games: user_games } %}
-            </ul>
-        </div>
-        <div class="homeDiv column">
-            <h2 class="homeSubtitle">Liste Des Derniers Jeux Notés Par La Commu</h2><table class="table">
-                <thead>
-                <tr>
-                    <th>Joueur</th>
-                    <th>Nom</th>
-                    <th>Date de début</th>
-                    <th>Date de fin</th>
-                    <th>Temps passé</th>
-                    <th>Histoire Terminée</th>
-                    <th>100%</th>
-                    <th>Early Access</th>
-                    <th>Note</th>
-                    <th>action</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for user_game in user_games_everyone %}
-                    <tr>
-                        <td>{{ user_game.user.username }}</td>
-                        <td>{{ user_game.game.title }}</td>
-                        <td>{{ user_game.playStartDate ? user_game.playStartDate|date('d/m/Y') : '' }}</td>
-                        <td>{{ user_game.playEndDate ? user_game.playEndDate|date('d/m/Y') : '' }}</td>
-                        <td>{{ user_game.playTimeSeconds ? user_game.formattedPlayTime : '' }}</td>
-                        <td>{{ user_game.completedStory ? 'Oui' : 'Non' }}</td>
-                        <td>{{ user_game.completedFull ? 'Oui' : 'Non' }}</td>
-                        <td>{{ user_game.earlyAccess ? 'Oui' : 'Non' }}</td>
-                        <td class="nowrap">{{ user_game.displayScoreHome }}</td>
-                        <td>
-                            <a href="{{ path('app_user_game_show', {'id': user_game.id}) }}">show</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+        <div class="columns is-multiline">
+            <!-- Bloc Mes derniers jeux -->
+            <div class="column is-12">
+                <div class="box">
+                    <h2 class="title is-4 has-text-warning mb-4">🎮 Mes 5 Derniers Jeux</h2>
+                    <div class="table-container">
+                        <table class="table is-striped is-hoverable is-fullwidth">
+                            <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Date de début</th>
+                                <th>Date de fin</th>
+                                <th>Temps passé</th>
+                                <th>Histoire Terminée</th>
+                                <th>100%</th>
+                                <th>Early Access</th>
+                                <th>{{ ratingScaleLabel }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for user_game in user_games %}
+                                <tr>
+                                    <td class="nowrap">{{ user_game.game.title }}</td>
+                                    <td class="nowrap">{{ user_game.playStartDate ? user_game.playStartDate|date('d/m/Y') : '' }}</td>
+                                    <td class="nowrap">{{ user_game.playEndDate ? user_game.playEndDate|date('d/m/Y') : '' }}</td>
+                                    <td class="nowrap">{{ user_game.playTimeSeconds ? user_game.formattedPlayTime : '' }}</td>
+                                    <td>
+                                        {% if user_game.completedStory %}
+                                            <span class="tag is-success">Oui</span>
+                                        {% else %}
+                                            <span class="tag is-dark">Non</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if user_game.completedFull %}
+                                            <span class="tag is-success">Oui</span>
+                                        {% else %}
+                                            <span class="tag is-dark">Non</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if user_game.earlyAccess %}
+                                            <span class="tag is-warning">Oui</span>
+                                        {% else %}
+                                            <span class="tag is-dark">Non</span>
+                                        {% endif %}
+                                    </td>
+                                    <td><strong>{{ user_game.displayScore }}</strong></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Timeline -->
+                    <div class="mt-5">
+                        {% include 'partials/_timeline.html.twig' with { user_games: user_games } %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bloc Derniers jeux de la communauté -->
+            <div class="column is-12">
+                <div class="box">
+                    <h2 class="title is-4 has-text-warning mb-4">🌍 Derniers Jeux Notés par la Communauté</h2>
+                    <div class="table-container">
+                        <table class="table is-striped is-hoverable is-fullwidth">
+                            <thead>
+                            <tr>
+                                <th>Joueur</th>
+                                <th>Nom</th>
+                                <th>Date de début</th>
+                                <th>Date de fin</th>
+                                <th>Temps passé</th>
+                                <th>Histoire Terminée</th>
+                                <th>100%</th>
+                                <th>Early Access</th>
+                                <th>Note</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for user_game in user_games_everyone %}
+                                <tr>
+                                    <td class="nowrap">{{ user_game.user.username }}</td>
+                                    <td class="nowrap">{{ user_game.game.title }}</td>
+                                    <td>{{ user_game.playStartDate ? user_game.playStartDate|date('d/m/Y') : '' }}</td>
+                                    <td>{{ user_game.playEndDate ? user_game.playEndDate|date('d/m/Y') : '' }}</td>
+                                    <td>{{ user_game.playTimeSeconds ? user_game.formattedPlayTime : '' }}</td>
+                                    <td>
+                                        {% if user_game.completedStory %}
+                                            <span class="tag is-success">Oui</span>
+                                        {% else %}
+                                            <span class="tag is-dark">Non</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if user_game.completedFull %}
+                                            <span class="tag is-success">Oui</span>
+                                        {% else %}
+                                            <span class="tag is-dark">Non</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if user_game.earlyAccess %}
+                                            <span class="tag is-warning">Oui</span>
+                                        {% else %}
+                                            <span class="tag is-dark">Non</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="nowrap"><strong>{{ user_game.displayScoreHome }}</strong></td>
+                                    <td>
+                                        <a class="button is-small is-link is-dark" href="{{ path('app_user_game_show', {'id': user_game.id}) }}">
+                                            Voir
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-
 {% endblock %}

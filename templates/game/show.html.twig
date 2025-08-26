@@ -1,41 +1,74 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Game{% endblock %}
+{% block title %}{{ game.title }}{% endblock %}
 
 {% block body %}
-    <h1>Game</h1>
+    <div class="container mt-5">
+        <div class="box">
+            <!-- Titre -->
+            <h1 class="title is-3 has-text-centered has-text-warning">{{ game.title }}</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ game.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ game.title }}</td>
-            </tr>
-            <tr>
-                <th>ReleaseDate</th>
-                <td>{{ game.releaseDate ? game.releaseDate|date('Y-m-d') : '' }}</td>
-            </tr>
+            <!-- Cover centré -->
+            <div class="has-text-centered mb-5">
+                {% if game.coverImage %}
+                    <figure class="image is-128x128 is-inline-block">
+                        <img class=""
+                             src="{{ asset('uploads/games/' ~ game.coverImage) }}"
+                             alt="{{ game.title }}">
+                    </figure>
+                {% else %}
+                    <p class="has-text-grey">Pas d’image disponible</p>
+                {% endif %}
+            </div>
 
-            <tr>
-                <th>Description</th>
-                <td>{{ game.summary }}</td>
-            </tr>
-            <tr>
-                <th>CoverImage</th>
-                <td><img
-                            src="{{ asset('uploads/games/' ~ game.coverImage) }}"
-                            alt="{{ game.title }}"
-                            style="max-height: 150px;"
-                    ></td>
-            </tr>
-        </tbody>
-    </table>
+            <!-- Infos principales -->
+            <table class="table is-fullwidth is-striped">
+                <tbody>
+                <tr>
+                    <th>ID</th>
+                    <td>{{ game.id }}</td>
+                </tr>
+                <tr>
+                    <th>Titre</th>
+                    <td>{{ game.title }}</td>
+                </tr>
+                <tr>
+                    <th>Date de sortie</th>
+                    <td>{{ game.releaseDate ? game.releaseDate|date('d/m/Y') : '—' }}</td>
+                </tr>
+                <tr>
+                    <th>ID IGDB</th>
+                    <td>{{ game.igdbid ?? '—' }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ game.summary ?: '—' }}</td>
+                </tr>
+                <tr>
+                    <th>Storyline</th>
+                    <td>{{ game.storyLine ?: '—' }}</td>
+                </tr>
+                <tr>
+                    <th>Plateformes</th>
+                    <td>
+                        {% if game.platforms is not empty %}
+                            <div class="tags">
+                                {% for platform in game.platforms %}
+                                    <span class="tag is-info">{{ platform.name }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <span class="has-text-grey">Aucune</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
 
-    <button><a href="{{ path('app_game_index') }}">Retour à la liste</a></button>
-
-    {# {{ include('game/_delete_form.html.twig') }} #}
+            <!-- Actions -->
+            <div class="buttons mt-4">
+                <a href="{{ path('app_game_index') }}" class="button is-link">⬅ Retour à la liste</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -3,117 +3,154 @@
 {% block title %}Mes Jeux{% endblock %}
 
 {% block body %}
+    <div class="container mt-6">
 
-    <form method="get" action="{{ path('app_user_game_index') }}">
-        <div class="row">
-            <div id="divFormFilterUserGame" class="column column-offset-25 column-25">
-                <div class="row display-none">
-                    <input type="hidden" name="sort" value="{{ sort }}">
-                    <input type="hidden" name="dir" value="{{ dir }}]">
-                </div>
-                <div class="row">
-                    <label for="filterStartDate" class="column text-align-right">Date début </label>
-                    <input type="date" id="filterStartDate" name="filterStartDate" value="{{ filterStartDate }}" class="column">
-                </div>
-                <div class="row">
-                    <label for="filterEndDate" class="column text-align-right">Date fin </label>
-                    <input type="date" id="filterEndDate" name="filterEndDate" value="{{ filterEndDate }}" class="column">
-                </div>
-                <div class="row">
-                    <button type="submit" class="column column-50 column-offset-50">Filtrer</button>
-                </div>
+        <!-- Formulaire de filtre -->
+        <div class="box mb-5">
+            <h2 class="title is-5 has-text-warning mb-4">🔎 Filtrer mes jeux</h2>
+            <form method="get" action="{{ path('app_user_game_index') }}">
+                <input type="hidden" name="sort" value="{{ sort }}">
+                <input type="hidden" name="dir" value="{{ dir }}">
 
+                <div class="columns is-vcentered">
+                    <div class="column is-3">
+                        <div class="field">
+                            <label for="filterStartDate" class="label">Date début</label>
+                            <div class="control">
+                                <input type="date" id="filterStartDate" name="filterStartDate"
+                                       value="{{ filterStartDate }}" class="input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="column is-3">
+                        <div class="field">
+                            <label for="filterEndDate" class="label">Date fin</label>
+                            <div class="control">
+                                <input type="date" id="filterEndDate" name="filterEndDate"
+                                       value="{{ filterEndDate }}" class="input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="column is-2 is-flex">
+                        <div class="field">
+                            <label class="label">&nbsp;</label> {# label vide qui garde la hauteur #}
+                            <button class="button is-fullwidth" type="submit">
+                                Filtrer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Table des jeux -->
+        <div class="box">
+            <h2 class="title is-5 has-text-warning mb-4">🎮 Mes jeux</h2>
+            <div class="table-container">
+                <table class="table is-striped is-hoverable is-fullwidth">
+                    <thead>
+                    <tr>
+                        <th>
+                            <a href="{{ path('app_user_game_index', {sort: 'title', dir: dir == 'asc' ? 'desc' : 'asc', filterEndDate: filterEndDate, filterStartDate: filterStartDate}) }}">
+                                Nom {% if sort == 'title' %}{{ dir == 'asc' ? '▲' : '▼' }}{% endif %}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="{{ path('app_user_game_index', {sort: 'playStartDate', dir: dir == 'asc' ? 'desc' : 'asc', filterEndDate: filterEndDate, filterStartDate: filterStartDate}) }}">
+                                Date de début {% if sort == 'playStartDate' %}{{ dir == 'asc' ? '▲' : '▼' }}{% endif %}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="{{ path('app_user_game_index', {sort: 'playEndDate', dir: dir == 'asc' ? 'desc' : 'asc', filterEndDate: filterEndDate, filterStartDate: filterStartDate}) }}">
+                                Date de fin {% if sort == 'playEndDate' %}{{ dir == 'asc' ? '▲' : '▼' }}{% endif %}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="{{ path('app_user_game_index', {sort: 'playTimeSeconds', dir: dir == 'asc' ? 'desc' : 'asc', filterEndDate: filterEndDate, filterStartDate: filterStartDate}) }}">
+                                Temps passé {% if sort == 'playTimeSeconds' %}{{ dir == 'asc' ? '▲' : '▼' }}{% endif %}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="{{ path('app_user_game_index', {sort: 'completedStory', dir: dir == 'asc' ? 'desc' : 'asc', filterEndDate: filterEndDate, filterStartDate: filterStartDate}) }}">
+                                Histoire Terminée {% if sort == 'completedStory' %}{{ dir == 'asc' ? '▲' : '▼' }}{% endif %}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="{{ path('app_user_game_index', {sort: 'completedFull', dir: dir == 'asc' ? 'desc' : 'asc', filterEndDate: filterEndDate, filterStartDate: filterStartDate}) }}">
+                                100% {% if sort == 'completedFull' %}{{ dir == 'asc' ? '▲' : '▼' }}{% endif %}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="{{ path('app_user_game_index', {sort: 'earlyAccess', dir: dir == 'asc' ? 'desc' : 'asc', filterEndDate: filterEndDate, filterStartDate: filterStartDate}) }}">
+                                Early Access {% if sort == 'earlyAccess' %}{{ dir == 'asc' ? '▲' : '▼' }}{% endif %}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="{{ path('app_user_game_index', {sort: 'scorePercent', dir: dir == 'asc' ? 'desc' : 'asc', filterEndDate: filterEndDate, filterStartDate: filterStartDate}) }}">
+                                {{ ratingScaleLabel }} {% if sort == 'scorePercent' %}{{ dir == 'asc' ? '▲' : '▼' }}{% endif %}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="#">
+                                Actions
+                            </a>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user_game in user_games %}
+                        <tr>
+                            <td class="nowrap">{{ user_game.game.title }}</td>
+                            <td>{{ user_game.playStartDate ? user_game.playStartDate|date('d/m/Y') : '' }}</td>
+                            <td>{{ user_game.playEndDate ? user_game.playEndDate|date('d/m/Y') : '' }}</td>
+                            <td>{{ user_game.playTimeSeconds ? user_game.formattedPlayTime : '' }}</td>
+                            <td>
+                                {% if user_game.completedStory %}
+                                    <span class="tag is-success">Oui</span>
+                                {% else %}
+                                    <span class="tag is-dark">Non</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if user_game.completedFull %}
+                                    <span class="tag is-success">Oui</span>
+                                {% else %}
+                                    <span class="tag is-dark">Non</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if user_game.earlyAccess %}
+                                    <span class="tag is-warning">Oui</span>
+                                {% else %}
+                                    <span class="tag is-dark">Non</span>
+                                {% endif %}
+                            </td>
+                            <td><strong>{{ user_game.displayScore }}</strong></td>
+                            <td>
+                                <a class="button is-small is-link is-dark" href="{{ path('app_user_game_show', {'id': user_game.id}) }}">Voir</a>
+                                <a class="button is-small is-info is-dark" href="{{ path('app_user_game_edit', {'id': user_game.id}) }}">Éditer</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="9" class="has-text-centered">Aucun jeu trouvé</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4">
+                <a class="button is-warning" href="{{ path('app_user_game_new') }}">➕ Ajouter une note</a>
             </div>
         </div>
-    </form>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th><a href="{{ path('app_user_game_index', {sort: 'title', dir: dir == 'asc' ? 'desc' : 'asc', filterEndDate: filterEndDate, filterStartDate: filterStartDate}) }}">
-                        Nom
-                        {% if sort == 'title' %}
-                            {% if dir == 'asc' %} ▲ {% else %} ▼ {% endif %}
-                        {% endif %}
-                    </a>
-                </th>
-                <th><a href="{{ path('app_user_game_index', {sort: 'playStartDate', dir: dir == 'asc' ? 'desc' : 'asc', filterEndDate: filterEndDate, filterStartDate: filterStartDate}) }}">
-                        Date de début
-                        {% if sort == 'playStartDate' %}
-                            {% if dir == 'asc' %} ▲ {% else %} ▼ {% endif %}
-                        {% endif %}
-                    </a>
-                </th>
-                <th><a href="{{ path('app_user_game_index', {sort: 'playEndDate', dir: dir == 'asc' ? 'desc' : 'asc', filterEndDate: filterEndDate, filterStartDate: filterStartDate}) }}">
-                        Date de fin
-                        {% if sort == 'playEndDate' %}
-                            {% if dir == 'asc' %} ▲ {% else %} ▼ {% endif %}
-                        {% endif %}
-                    </a>
-                </th>
-                <th><a href="{{ path('app_user_game_index', {sort: 'playTimeSeconds', dir: dir == 'asc' ? 'desc' : 'asc', filterEndDate: filterEndDate, filterStartDate: filterStartDate}) }}">
-                        Temps passé
-                        {% if sort == 'playTimeSeconds' %}
-                            {% if dir == 'asc' %} ▲ {% else %} ▼ {% endif %}
-                        {% endif %}
-                    </a>
-                </th>
-                <th><a href="{{ path('app_user_game_index', {sort: 'completedStory', dir: dir == 'asc' ? 'desc' : 'asc', filterEndDate: filterEndDate, filterStartDate: filterStartDate}) }}">
-                        Histoire Terminée
-                        {% if sort == 'completedStory' %}
-                            {% if dir == 'asc' %} ▲ {% else %} ▼ {% endif %}
-                        {% endif %}
-                    </a>
-                </th>
-                <th><a href="{{ path('app_user_game_index', {sort: 'completedFull', dir: dir == 'asc' ? 'desc' : 'asc', filterEndDate: filterEndDate, filterStartDate: filterStartDate}) }}">
-                        100%
-                        {% if sort == 'completedFull' %}
-                            {% if dir == 'asc' %} ▲ {% else %} ▼ {% endif %}
-                        {% endif %}
-                    </a>
-                </th>
-                <th><a href="{{ path('app_user_game_index', {sort: 'earlyAccess', dir: dir == 'asc' ? 'desc' : 'asc', filterEndDate: filterEndDate, filterStartDate: filterStartDate}) }}">
-                        Early Access
-                        {% if sort == 'earlyAccess' %}
-                            {% if dir == 'asc' %} ▲ {% else %} ▼ {% endif %}
-                        {% endif %}
-                    </a>
-                </th>
-                <th><a href="{{ path('app_user_game_index', {sort: 'scorePercent', dir: dir == 'asc' ? 'desc' : 'asc', filterEndDate: filterEndDate, filterStartDate: filterStartDate}) }}">
-                        {{ ratingScaleLabel }}
-                        {% if sort == 'scorePercent' %}
-                            {% if dir == 'asc' %} ▲ {% else %} ▼ {% endif %}
-                        {% endif %}
-                    </a>
-                </th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for user_game in user_games %}
-            <tr>
-                <td>{{ user_game.game.title }}</td>
-                <td>{{ user_game.playStartDate ? user_game.playStartDate|date('d/m/Y') : '' }}</td>
-                <td>{{ user_game.playEndDate ? user_game.playEndDate|date('d/m/Y') : '' }}</td>
-                <td>{{ user_game.playTimeSeconds ? user_game.formattedPlayTime : '' }}</td>
-                <td>{{ user_game.completedStory ? 'Oui' : 'Non' }}</td>
-                <td>{{ user_game.completedFull ? 'Oui' : 'Non' }}</td>
-                <td>{{ user_game.earlyAccess ? 'Oui' : 'Non' }}</td>
-                <td>{{ user_game.displayScore }}</td>
-                <td>
-                    <a href="{{ path('app_user_game_show', {'id': user_game.id}) }}">show</a>
-                    <a href="{{ path('app_user_game_edit', {'id': user_game.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <!-- Timeline -->
+        <div class="mt-5">
+            {% include 'partials/_timeline.html.twig' with { user_games: user_games } %}
+        </div>
 
-    <button><a href="{{ path('app_user_game_new') }}">Ajouter Une Note</a></button>
-
-    {% include 'partials/_timeline.html.twig' with { user_games: user_games } %}
+    </div>
 {% endblock %}

@@ -3,24 +3,54 @@
 {% block title %}Modifier mon profil{% endblock %}
 
 {% block body %}
-    <h1>Modifier mon profil</h1>
+    <div class="container mt-5">
+        <div class="box">
+            <!-- Titre -->
+            <h1 class="title is-3 has-text-warning">👤 Modifier mon profil</h1>
 
-    {{ form_start(form) }}
-    {{ form_row(form.username) }}
-    {{ form_errors(form.username) }}
-    {{ form_row(form.ratingScale) }}
-    {{ form_errors(form) }}
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="flash-{{ label }}">
-                {{ message }}
+            <!-- Formulaire -->
+            {{ form_start(form) }}
+            <div class="columns">
+                <div class="column is-2">
+                    {{ form_label(form.username, null, { 'label_attr': {'class': 'label'} }) }}
+                    <div class="control">
+                        {{ form_widget(form.username, { 'attr': {'class': 'input'} }) }}
+                    </div>
+                    {{ form_errors(form.username) }}
+                </div>
+
+                <div class="column is-2 ml-4">
+                    {{ form_label(form.ratingScale, null, { 'label_attr': {'class': 'label'} }) }}
+                    <div class="control select is-warning">
+                        {{ form_widget(form.ratingScale) }}
+                    </div>
+                    {{ form_errors(form.ratingScale) }}
+                </div>
+
+                <!-- Bouton -->
+                <div class="column is-2 ml-4">
+                    <label class="label">&nbsp</label>
+                    <div class="control">
+                        <button class="button">💾 Enregistrer</button>
+                    </div>
+                </div>
             </div>
-        {% endfor %}
-    {% endfor %}
-    {% for error in form.vars.errors %}
-        <div class="error">{{ error.message }}</div>
-    {% endfor %}
-    <button class="btn">Enregistrer</button>
-    {{ form_end(form) }}
 
+            {{ form_end(form) }}
+
+            <!-- Flash messages -->
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="notification is-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            <!-- Erreurs globales -->
+            {% for error in form.vars.errors %}
+                <div class="notification is-danger">{{ error.message }}</div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
