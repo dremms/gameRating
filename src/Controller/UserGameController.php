@@ -83,7 +83,7 @@ final class UserGameController extends AbstractController
     public function show(UserGame $userGame): Response
     {
         $user = $this->getUser();
-        $ratingScaleLabel = $user->getRatingScale()->getName();
+        $ratingScaleLabel = $userGame->getUser()->getRatingScale()->getName();
 
         return $this->render('user_game/show.html.twig', [
             'user_game' => $userGame,
