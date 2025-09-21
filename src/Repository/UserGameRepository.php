@@ -89,13 +89,13 @@ class UserGameRepository extends ServiceEntityRepository
 
         return $this->createQueryBuilder('ug')
             ->join('ug.game', 'g')
-            ->select('g.id, g.title, COUNT(g.id) as gameRatingCount')
+            ->select('g.id, g.title, COUNT(g.id) as gameRatingCount, MIN(ug.playEndDate) as minPlayEndDate')
             ->andWhere('ug.playEndDate BETWEEN :filterStartDate AND :filterEndDate')
             ->setParameter('filterStartDate', $startDate)
             ->setParameter('filterEndDate', $endDate)
             ->groupBy('g.id')
             ->orderBy('gameRatingCount', 'DESC')
-            ->addOrderBy('ug.playEndDate', 'ASC')
+            ->addOrderBy('minPlayEndDate', 'ASC')
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
