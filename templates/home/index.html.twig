@@ -6,6 +6,46 @@
     <div class="container mt-6">
 
         <div class="columns is-multiline">
+            <!-- Bloc userStats -->
+            {% if userStats.bestGame is defined %}
+                <div class="column is-half">
+                    <div class="box has-background-dark has-text-light fixed-grid has-6-cols has-text-centered">
+                        <div class="grid is-align-items-center">
+                            <div class="cell is-col-span-6 title is-4 has-text-warning mb-4">📈Mes Statistiques</div>
+                            <div class="cell is-col-span-2">📊Note Moyenne</div>
+                            <div class="cell is-col-span-2">📝Nb. Notes</div>
+                            <div class="cell is-col-span-2">⏱️Temps total</div>
+                            <div class="cell is-col-span-2"><strong>{{ userStats.averageRating }}</strong></div>
+                            <div class="cell is-col-span-2"><strong>{{ userStats.ratingsCount }}</strong></div>
+                            <div class="cell is-col-span-2"><strong>{{ userStats.totalPlayTime }}</strong></div>
+                            <div class="cell is-col-span-3">🕹️Jeu de l'année :</div>
+                            <div class="cell is-col-span-3">
+                                <strong>{{ userStats.bestGame }} {{ userStats.bestGameRating }}</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            <!-- Bloc stats communauté -->
+            {% if globalStats.mostPopularGame is defined %}
+            <div class="column is-half">
+                <div class="box has-background-dark has-text-light fixed-grid has-6-cols has-text-centered">
+                    <div class="grid is-align-items-center">
+                        <div class="cell is-col-span-6 title is-4 has-text-warning mb-4">📉Statistiques de la Communauté</div>
+                        <div class="cell is-col-span-2">📊Note Moyenne</div>
+                        <div class="cell is-col-span-2">📝Nb. Notes</div>
+                        <div class="cell is-col-span-2">⏱️Temps total</div>
+                        <div class="cell is-col-span-2"><strong>{{ globalStats.averageRating }}</strong></div>
+                        <div class="cell is-col-span-2"><strong>{{ globalStats.ratingsCount }}</strong></div>
+                        <div class="cell is-col-span-2"><strong>{{ globalStats.totalPlayTime }}</strong></div>
+                        <div class="cell is-col-span-3">🕹️Jeu le plus populaire :</div>
+                        <div class="cell is-col-span-3">
+                            <strong>{{ globalStats.mostPopularGame }}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
             <!-- Bloc Mes derniers jeux -->
             <div class="column is-12">
                 <div class="box">

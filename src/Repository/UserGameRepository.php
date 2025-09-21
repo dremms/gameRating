@@ -16,6 +16,7 @@ class UserGameRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, UserGame::class);
     }
+
     public function findByUserSorted(UserInterface $user, string $sort, string $dir, string $filterStartDate, string $filterEndDate): array
     {
         $allowedSorts = [
@@ -27,7 +28,7 @@ class UserGameRepository extends ServiceEntityRepository
             'completedFull',
             'earlyAccess',
             'scorePercent',
-            ];
+        ];
         if (!in_array($sort, $allowedSorts)) {
             $sort = 'title';
         }
@@ -45,6 +46,62 @@ class UserGameRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function getStats(UserInterface $user = null): array
+    {
+        $qb = $this->createQueryBuilder('ug')
+            ->select('SUM(ug.playTimeSeconds) as totalPlayTimeSeconds')
+            ->addSelect('COUNT(ug.id) as ratingCount')
+            ->addSelect('AVG(ug.scorePercent) as avgScore');
+
+        if ($user !== null) {
+            $qb->andWhere('ug.user = :user')
+                ->setParameter('user', $user);
+        }
+
+        return $qb->getQuery()->getSingleResult();
+    }
+
+    public function getGameOfTheYearsBeforeDate(UserInterface $user, string $filterEndDate): array
+    {
+        $endDate = new \DateTime($filterEndDate);
+        $startDate = (clone $endDate)->modify('-1 year');
+
+        return $this->createQueryBuilder('ug')
+            ->join('ug.game', 'g')
+            ->select('g.id, g.title, ug.scorePercent')
+            ->andWhere('ug.user = :user')
+            ->andWhere('ug.playEndDate BETWEEN :filterStartDate AND :filterEndDate')
+            ->setParameter('user', $user)
+            ->setParameter('filterStartDate', $startDate)
+            ->setParameter('filterEndDate', $endDate)
+            ->addOrderBy('ug.scorePercent', 'DESC')
+            ->addOrderBy('ug.playEndDate', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function getMostRatedGameBeforeDate(string $filterEndDate): array
+    {
+        $endDate = new \DateTime($filterEndDate);
+        $startDate = (clone $endDate)->modify('-1 year');
+
+        return $this->createQueryBuilder('ug')
+            ->join('ug.game', 'g')
+            ->select('g.id, g.title, COUNT(g.id) as gameRatingCount')
+            ->andWhere('ug.playEndDate BETWEEN :filterStartDate AND :filterEndDate')
+            ->setParameter('filterStartDate', $startDate)
+            ->setParameter('filterEndDate', $endDate)
+            ->groupBy('g.id')
+            ->orderBy('gameRatingCount', 'DESC')
+            ->addOrderBy('ug.playEndDate', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+
 
     //    /**
     //     * @return UserGame[] Returns an array of UserGame objects

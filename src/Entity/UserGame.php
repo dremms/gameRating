@@ -116,7 +116,7 @@ class UserGame
     }
 
     /** Helper to format as H:i:s */
-    public function getFormattedPlayTime(): ?string
+    public function getFormattedPlayTime(string $formatedType = ':'): ?string
     {
         if ($this->playTimeSeconds === null) {
             return null;
@@ -124,6 +124,9 @@ class UserGame
         $hours = floor($this->playTimeSeconds / 3600);
         $minutes = floor(($this->playTimeSeconds % 3600) / 60);
         $seconds = $this->playTimeSeconds % 60;
+        if ($formatedType === 'hm') {
+            return sprintf('%02dh %02dmin', $hours, $minutes);
+        }
         return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
     }
 

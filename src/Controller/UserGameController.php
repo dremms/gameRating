@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Platform;
 use App\Entity\UserGame;
 use App\Form\UserGameType;
+use App\Repository\GameRepository;
 use App\Repository\UserGameRepository;
 use App\Service\UserGameService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,7 +13,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use App\Service\GameService;
 
 #[Route('/user/game')]
 final class UserGameController extends AbstractController
@@ -41,13 +41,13 @@ final class UserGameController extends AbstractController
     }
 
     #[Route('/new', name: 'app_user_game_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, GameService $gameService, UserGameService $userGameService): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, GameRepository $gameRepository, UserGameService $userGameService): Response
     {
         $user = $this->getUser();
         $ratingScaleLabel = $user->getRatingScale()->getName();
 
         $userGame = new UserGame();
-        $games = $gameService->getAvailableGamesForUser($user);
+        $games = $gameRepository->getAvailableGamesForUser($user);
 
         $form = $this->createForm(
             UserGameType::class,
