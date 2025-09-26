@@ -11,6 +11,7 @@ framework:
         handler_id: null
         cookie_secure: auto
         cookie_samesite: lax
+        cookie_lifetime: 2592000   # 30 jours (30*24*60*60)
 
     #esi: true
     #fragments: true
