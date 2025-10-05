@@ -79,7 +79,7 @@ class UserGameRepository extends ServiceEntityRepository
             ->addOrderBy('ug.playEndDate', 'ASC')
             ->setMaxResults(1)
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getOneOrNullResult() ?? [];
     }
 
     public function getMostRatedGameBeforeDate(string $filterEndDate): array
