@@ -116,26 +116,17 @@ IGDB_CLIENT_SECRET=your_secret
 * Ajout d’un flux RSS
 * Ajout de la consultation des autres profils
 * Modification de l'import de jeux avec recherche par nom au lieu d'ID IGDB
+* Liste de jeux par auto-completion dans la page de notation
 * Refonte du front (meilleur responsive / menu burger...)
 
 ---
 
 ## Impressions d'écrans
 
-### Écran de login
-![Écran de login](public/imageMd/1login.png)
+| Écran de login | Page d'accueil | Jeux de l'utilisateur |
+|---------|------------|--------|
+| ![1](public/imageMd/1login.png) | ![2](public/imageMd/2home.png) | ![3](public/imageMd/3userGame.png) |
 
-### Page d'accueil
-![Page d'accueil](public/imageMd/2home.png)
-
-### Jeux de l'utilisateur
-![Jeux de l'utilisateur](public/imageMd/3userGame.png)
-
-### Affichage d'un jeu
-![Affichage d'un jeu](public/imageMd/4userGameDisplay.png)
-
-### Édition d'un jeu
-![Édition d'un jeu](public/imageMd/5userGameEdit.png)
-
-### Ajout d'un jeu
-![Ajout d'un jeu](public/imageMd/6addGame.png)
+| Affichage d'un jeu | Édition d'un jeu | Ajout d'un jeu |
+|--------------|------------|-----------|
+| ![4](public/imageMd/4userGameDisplay.png) | ![5](public/imageMd/5userGameEdit.png) | ![6](public/imageMd/6addGame.png) |
