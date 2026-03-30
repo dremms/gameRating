@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+    <channel>
+        <title>Activité GameRating</title>
+        <link>{{ url('app_home') }}</link>
+        <description>Dernières activités des joueurs</description>
+
+        {% for user_game in user_games_everyone %}
+            <item>
+
+                <title>
+                    {% if user_game.completedFull %}
+                        {{ user_game.user.username }} a terminé {{ user_game.game.title }} à 100% ({{ user_game.displayScoreHome }})
+                    {% elseif user_game.completedStory %}
+                        {{ user_game.user.username }} a terminé l'histoire de {{ user_game.game.title }} ({{ user_game.displayScoreHome }})
+                    {% elseif user_game.earlyAccess %}
+                        {{ user_game.user.username }} a joué à l'early access de {{ user_game.game.title }} ({{ user_game.displayScoreHome }})
+                    {% else %}
+                        {{ user_game.user.username }} n'a pas fini {{ user_game.game.title }} ({{ user_game.displayScoreHome }})
+                    {% endif %}
+                </title>
+
+                <description>
+                    <![CDATA[
+Joueur : {{ user_game.user.username }}
+Jeu : {{ user_game.game.title }}
+
+{% if user_game.playStartDate %}
+Début : {{ user_game.playStartDate|date('d/m/Y') }}
+{% endif %}
+
+{% if user_game.playEndDate %}
+Fin : {{ user_game.playEndDate|date('d/m/Y') }}
+{% endif %}
+
+{% if user_game.playTimeSeconds %}
+Temps de jeu : {{ user_game.formattedPlayTime }}
+{% endif %}
+
+Histoire terminée : {{ user_game.completedStory ? 'Oui' : 'Non' }}
+100% terminé : {{ user_game.completedFull ? 'Oui' : 'Non' }}
+Early Access : {{ user_game.earlyAccess ? 'Oui' : 'Non' }}
+
+Score : {{ user_game.displayScoreHome }}
+]]>
+                </description>
+
+                <pubDate>
+                    {{ (user_game.playEndDate ?? user_game.playStartDate ?? "now")|date('r') }}
+                </pubDate>
+
+                <guid>
+                    {{ absolute_url(path('app_user_game_show', {'id': user_game.id})) }}
+                </guid>
+
+            </item>
+        {% endfor %}
+    </channel>
+</rss>

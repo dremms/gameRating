@@ -38,6 +38,8 @@ security:
         - { path: ^/login, roles: PUBLIC_ACCESS }
         # Autorise tout le monde à voir la page register
         - { path: ^/register, roles: PUBLIC_ACCESS }
+        # Autorise tout le monde à voir le flux rss
+        - { path: ^/rss, roles: PUBLIC_ACCESS }
         # Bloque tout le reste si pas connecté
         - { path: ^/, roles: ROLE_USER }
 
