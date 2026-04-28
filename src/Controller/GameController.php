@@ -139,14 +139,4 @@ final class GameController extends AbstractController
         return $this->redirectToRoute('app_game_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/test', name: 'igdb_test')]
-    public function test(IgdbClientService $igdb): Response
-    {
-        $game = $igdb->request('games', 'fields id, name, summary, storyline, first_release_date, platforms, cover; where id=103329; limit 1;');
-        $coverId = $game[0]['cover'];
-        $platforms = $game[0]['platforms'];
-        $cover = $igdb->request('covers', "fields *; where id=$coverId; limit 1;");
-        $imageData = @file_get_contents('https:' . str_replace('/t_thumb/', '/t_cover_big/', $cover[0]['url']));
-        dd($game, $cover, $platforms, $imageData);
-    }
 }

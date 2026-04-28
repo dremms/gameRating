@@ -23,26 +23,27 @@ class StatsService
         $userGameStats = $this->userGameRepository->getStats($user);
         $userGOTY = $this->userGameRepository->getGameOfTheYearsBeforeDate($user, $today->format('Y-m-d'));
 
-        if (empty($userGameStats)) {
+        if (empty($userGOTY)) {
             return [];
         }
 
         // Total playtime
-        $userGame->setPlayTimeSeconds($userGameStats['totalPlayTimeSeconds']);
+        $userGame->setPlayTimeSeconds($userGameStats['totalPlayTimeSeconds'] ?? 0);
 
         // Average rating
-        $stats = new UserGameStatsService($userGameStats['avgScore'], $user);
+        $stats = new UserGameStatsService($userGameStats['avgScore'] ?? null, $user);
         $userAvgScore = $stats->getDisplayScoreHome();
 
         // GOTY
-        $stats = new UserGameStatsService($userGOTY['scorePercent'], $user);
+        $stats = new UserGameStatsService($userGOTY['scorePercent'] ?? null, $user);
         $userGotyScore = $stats->getDisplayScoreHome();
 
         return [
             'averageRating' => $userAvgScore,
             'ratingsCount' => $userGameStats['ratingCount'],
             'totalPlayTime' => $userGame->getFormattedPlayTime('hm'),
-            'bestGame' => $userGOTY['title'],
+            'totalPlayTimeSeconds' => $userGameStats['totalPlayTimeSeconds'] ?? 0,
+            'bestGame' => $userGOTY['title'] ?? null,
             'bestGameRating' => $userGotyScore,
         ];
     }

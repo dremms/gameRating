@@ -38,9 +38,10 @@
                 <div id="navbar" class="navbar-menu" data-navbar-target="menu">
                     <div class="navbar-start">
                         <a class="navbar-item" href="{{ path('app_home') }}">📂 Menu principal</a>
-                        <a class="navbar-item" href="{{ path('app_user_game_index') }}">🎮 Mes jeux</a>
+                        <a class="navbar-item" href="{{ path('app_user_game_index', {userId: app.user.id}) }}">🎮 Mes jeux</a>
                         <a class="navbar-item" href="{{ path('app_game_index') }}">🎮 Les jeux</a>
-                        <a class="navbar-item" href="{{ path('app_profile_edit') }}" >👤 Mon Compte</a>
+                        <a class="navbar-item" href="{{ path('app_users') }}" >👥 Les joueurs</a>
+                        <a class="navbar-item" href="{{ path('app_profile_edit') }}" >👤 Mon compte</a>
                     </div>
                     <div class="navbar-end">
                         <div class="navbar-item">

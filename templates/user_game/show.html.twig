@@ -73,13 +73,13 @@
         </div>
 
         <!-- Boutons -->
-        {% if user_game.user == currentUser %}
             <div class="columns mt-5">
                 <div class="column">
-                    <a href="{{ path('app_user_game_index') }}" class="button is-link is-dark">⬅ Retour</a>
-                    <a href="{{ path('app_user_game_edit', {'id': user_game.id}) }}" class="button is-warning is-outlined">✏️ Éditer</a>
+                    <a href="{{ path('app_user_game_index', {'userId': userId}) }}" class="button is-link is-dark">⬅ Retour</a>
+                    {% if user_game.user == currentUser %}
+                        <a href="{{ path('app_user_game_edit', {'id': user_game.id}) }}" class="button is-warning is-outlined">✏️ Éditer</a>
+                    {% endif %}
                 </div>
             </div>
-        {% endif %}
     </div>
 {% endblock %}

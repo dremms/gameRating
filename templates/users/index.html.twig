@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Les joueurs{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="box">
+            <h1 class="title is-3 has-text-warning ">👥 Les Joueurs</h1>
+
+            <!-- Table -->
+            <div class="table-container">
+                <table class="table is-striped is-hoverable is-fullwidth">
+                    <thead>
+                    <tr>
+                        <th>Joueur</th>
+                        <th>Temps de jeu</th>
+                        <th>Nombre de jeux</th>
+                        <th>Note Moyenne</th>
+                        <th>Jeu de l'année</th>
+                        <th class="has-text-centered">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in usersWithStats %}
+                        {% set user = item.user %}
+                        {% set stats = item.stats %}
+                        <tr>
+                            <td>{{ user.username }}</td>
+                            <td>{{ stats.totalPlayTime ?? '-' }}</td>
+                            <td>{{ stats.ratingsCount ?? 0 }}</td>
+                            <td>{{ stats.averageRating ?? '-' }}</td>
+                            <td>{{ stats.bestGame ?? '-' }}</td>
+                            <td class="has-text-centered">
+                                <a class="button is-small is-link is-dark" href="{{ path('app_user_game_index', {'userId': user.id}) }}">Voir</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div
+{% endblock %}

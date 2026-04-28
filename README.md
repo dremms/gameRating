@@ -113,8 +113,6 @@ IGDB_CLIENT_SECRET=your_secret
 
 ## Améliorations prévues
 
-* Ajout d’un flux RSS
-* Ajout de la consultation des autres profils
 * Modification de l'import de jeux avec recherche par nom au lieu d'ID IGDB
 * Liste de jeux par auto-completion dans la page de notation
 * Refonte du front (meilleur responsive / menu burger...)

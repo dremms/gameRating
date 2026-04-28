@@ -7,6 +7,7 @@ use App\Entity\UserGame;
 use App\Form\UserGameType;
 use App\Repository\GameRepository;
 use App\Repository\UserGameRepository;
+use App\Repository\UserRepository;
 use App\Service\UserGameService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,10 +18,13 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/user/game')]
 final class UserGameController extends AbstractController
 {
-    #[Route(name: 'app_user_game_index', methods: ['GET'])]
-    public function index(UserGameRepository $userGameRepository, Request $request): Response
+    #[Route('/user/{userId}', 'app_user_game_index', methods: ['GET'])]
+    public function index(string $userId, UserGameRepository $userGameRepository, Request $request, UserRepository $userRepository): Response
     {
-        $user = $this->getUser();
+        $user = $userId ? $userRepository->find($userId) : $this->getUser();
+        $connectedUser = $this->getUser();
+        $isUserPage = $user === $connectedUser;
+
         $ratingScaleLabel = $user->getRatingScale()->getName();
 
         $sort = $request->query->get('sort', 'playEndDate');
@@ -37,6 +41,8 @@ final class UserGameController extends AbstractController
             'dir' => $dir,
             'filterStartDate' => $filterStartDate,
             'filterEndDate' => $filterEndDate,
+            'isUserPage' => $isUserPage,
+            'userId' => $userId,
         ]);
     }
 
@@ -70,7 +76,7 @@ final class UserGameController extends AbstractController
             $entityManager->persist($userGame);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_user_game_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_user_game_index', ['userId' => $this->getUser()->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('user_game/new.html.twig', [
@@ -84,11 +90,13 @@ final class UserGameController extends AbstractController
     {
         $user = $this->getUser();
         $ratingScaleLabel = $userGame->getUser()->getRatingScale()->getName();
+        $userId = $userGame->getUser()->getId();
 
         return $this->render('user_game/show.html.twig', [
             'user_game' => $userGame,
             'ratingScaleLabel' => $ratingScaleLabel,
             'currentUser' => $user,
+            'userId' => $userId
         ]);
     }
 
@@ -134,7 +142,7 @@ final class UserGameController extends AbstractController
             $userGame->setUpdateDate(new \DateTime('now'));
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_user_game_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_user_game_index', ['userId' => $this->getUser()->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('user_game/edit.html.twig', [
