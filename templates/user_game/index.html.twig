@@ -7,7 +7,7 @@
 
         <!-- Formulaire de filtre -->
         <div class="box mb-5">
-            <h2 class="title is-5 has-text-warning mb-4">🔎 Filtrer mes jeux</h2>
+            <h2 class="title is-5 has-text-warning mb-4">🔎 Filtrer les jeux</h2>
             <form method="get" action="{{ path('app_user_game_index', {userId: userId}) }}">
                 <input type="hidden" name="sort" value="{{ sort }}">
                 <input type="hidden" name="dir" value="{{ dir }}">
@@ -47,7 +47,7 @@
 
         <!-- Table des jeux -->
         <div class="box">
-            <h2 class="title is-5 has-text-warning mb-4">🎮 Mes jeux</h2>
+            <h2 class="title is-5 has-text-warning mb-4">🎮 Jeux de {{ user.username }}</h2>
             <div class="table-container">
                 <table class="table is-striped is-hoverable is-fullwidth">
                     <thead>

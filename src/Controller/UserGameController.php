@@ -43,6 +43,7 @@ final class UserGameController extends AbstractController
             'filterEndDate' => $filterEndDate,
             'isUserPage' => $isUserPage,
             'userId' => $userId,
+            'user' => $user
         ]);
     }
 
